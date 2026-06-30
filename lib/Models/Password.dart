@@ -18,4 +18,7 @@ class Password {
   }
 
   Hashalg get algorithmUsed => _algorithmUsed;
+  // to implement
+  // double calculateStrength(Password password) {
+  // }
 }
