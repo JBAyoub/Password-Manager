@@ -1,2 +1,2 @@
 // ignore: file_names
-enum HashAlg { sha256, dartPack }
+enum HashAlg { sha256, dartPack, other }

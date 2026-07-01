@@ -1,5 +1,5 @@
 import 'package:password/Models/Password.dart';
-import 'package:password/Utils/enums.dart';
+import 'package:password/Utils/extensions.dart';
 
 class Creds {
   final int _id;
@@ -21,8 +21,8 @@ class Creds {
     return Creds(
       id: json['id'] as int,
       p: Password(
-        hashed: json['hashed_password'],
-        algorithmUsed: json['algorithm_used'] as HashAlg,
+        hashed: json['hashed_password'].toString(),
+        algorithmUsed: HashAlgToString.parseString(json['used_alg'].toString()),
         passwordStrength: double.tryParse(json['calculcated_strength']) ?? 0.0,
       ),
       username: json['username'].toString(),
