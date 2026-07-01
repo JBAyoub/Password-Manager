@@ -1,32 +1,24 @@
-import 'dart:math';
 import 'package:password/Contracts%20(%20interfaces%20)/hash_alg.repo.dart';
-import 'dart:convert';
 import 'package:cryptography/cryptography.dart';
+import 'package:password/Data%20Sources/encryption_script.dart';
 import 'package:password/Models/EncryptionResult.dart';
 
 class LocalHashAlg implements HashAlgRepo {
+  final pbkdf2 = Pbkdf2(
+    macAlgorithm: Hmac.sha256(),
+    iterations: 100000,
+    bits: 256,
+  );
   @override
   Future<EncryptionResult> encryptPassword({
     required String masterPassword,
     required String websitePassword,
   }) async {
-    final algorithm = AesGcm.with256bits();
-    final random = Random.secure();
-    final salt = List<int>.generate(16, (_) => random.nextInt(256));
-    final pbkdf2 = Pbkdf2(
-      macAlgorithm: Hmac.sha256(),
-      iterations: 100000,
-      bits: 256,
-    );
-    final secretKey = await pbkdf2.deriveKey(
-      secretKey: SecretKey(utf8.encode(masterPassword)),
-      nonce: salt,
-    );
-    final secretBox = await algorithm.encrypt(
-      utf8.encode(websitePassword),
-      secretKey: secretKey,
-    );
-    return EncryptionResult(secretBox: secretBox, salt: salt);
+    return await EncryptionScript.encrypt(
+      masterPassword: masterPassword,
+      websitePassword: websitePassword,
+      pbkdf2: pbkdf2,
+    ); //save encryption;
   }
 
   @override
@@ -35,20 +27,11 @@ class LocalHashAlg implements HashAlgRepo {
     required List<int> salt,
     required SecretBox secretBox,
   }) async {
-    final algorithm = AesGcm.with256bits();
-
-    final pbkdf2 = Pbkdf2(
-      macAlgorithm: Hmac.sha256(),
-      iterations: 100000,
-      bits: 256,
+    return await EncryptionScript.decrypt(
+      masterPassword: masterPassword,
+      salt: salt,
+      secretBox: secretBox,
+      pbkdf2: pbkdf2,
     );
-
-    final secretKey = await pbkdf2.deriveKey(
-      secretKey: SecretKey(utf8.encode(masterPassword)),
-      nonce: salt,
-    );
-    final bytes = await algorithm.decrypt(secretBox, secretKey: secretKey);
-
-    return utf8.decode(bytes);
   }
 }

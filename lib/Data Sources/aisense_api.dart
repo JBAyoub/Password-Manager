@@ -15,5 +15,6 @@ abstract class AisenseApi {
       var json = jsonDecode(response.body);
       return json['sha256_hash'];
     }
+    return null;
   }
 }
