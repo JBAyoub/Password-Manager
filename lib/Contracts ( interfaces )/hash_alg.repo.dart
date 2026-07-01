@@ -1,7 +1,7 @@
 import 'package:password/Models/HashAlg.dart';
+import 'package:password/Models/Password.dart';
 
 abstract class HashAlgRepo {
-  Future<Hashalg> getAlgorithm(int id);
-  Future<String> applyAlgorithm(String password);
-  Future<void> addAlg(Hashalg ha);
+  Future<String> hashPassword(Hashalg ha, Password password);
+  Future<Password> dehashPassword(Hashalg ha, String hashedPassword);
 }
