@@ -1,7 +1,7 @@
-import 'package:password/Models/HashAlg.dart';
 import 'package:password/Models/Password.dart';
+import 'package:password/Utils/enums.dart';
 
 abstract class HashAlgRepo {
-  Future<String> hashPassword(Hashalg ha, Password password);
-  Future<Password> dehashPassword(Hashalg ha, String hashedPassword);
+  Future<String> hashPassword(HashAlg ha, Password password);
+  Future<Password> dehashPassword(HashAlg ha, String hashedPassword);
 }

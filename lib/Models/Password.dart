@@ -1,8 +1,8 @@
-import 'package:password/Models/HashAlg.dart';
+import 'package:password/Utils/enums.dart';
 
 class Password {
-  final String _hashed;
-  final Hashalg _algorithmUsed;
+  late final String _hashed;
+  final HashAlg _algorithmUsed;
   final double passwordStrength;
 
   Password({
@@ -11,14 +11,19 @@ class Password {
     required this.passwordStrength,
   });
 
+  // ignore: unnecessary_getters_setters
   String get hashed => _hashed;
   // ignore: unused_element
-  set _algorithmUsed(Hashalg ha) {
+  set _algorithmUsed(HashAlg ha) {
     _algorithmUsed = ha;
   }
 
-  Hashalg get algorithmUsed => _algorithmUsed;
-  // to implement
-  // double calculateStrength(Password password) {
-  // }
+  set hashed(String s) {
+    _hashed = s;
+  }
+
+  HashAlg get algorithmUsed => _algorithmUsed;
+  double calculateStrength(Password password) {
+    return 5.0;
+  }
 }

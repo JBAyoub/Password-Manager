@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 abstract class Validators {
@@ -11,14 +10,5 @@ abstract class Validators {
       createDataFile(f);
     }
     return f;
-  }
-
-  // move this to the factory object creation in creds
-  static Future<Map<String, dynamic>> jsonToMap() async {
-    final File f = File('data/data.json');
-    final File data = await getJsonFile(f);
-    final Map<String, dynamic> passes =
-        jsonDecode(data.readAsStringSync()) as Map<String, dynamic>;
-    return passes;
   }
 }
