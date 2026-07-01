@@ -11,4 +11,9 @@ abstract class Validators {
     }
     return f;
   }
+
+  static bool isValidSha256(String s) {
+    final regEx = RegExp(r'^[a-fA-F0-9]{64}$');
+    return regEx.hasMatch(s);
+  }
 }

@@ -1,6 +1,6 @@
 import 'package:password/Models/Creds.dart';
 
-abstract class CredRepo {
+abstract interface class CredRepo {
   Future<Creds?> searchCred(int id);
   Future<List<Creds>?> displayAll();
   Future<List<Creds>?> getFavorties();

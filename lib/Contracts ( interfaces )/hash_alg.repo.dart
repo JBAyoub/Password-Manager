@@ -1,7 +1,14 @@
-import 'package:password/Models/Password.dart';
-import 'package:password/Utils/enums.dart';
+import 'package:cryptography/cryptography.dart';
+import 'package:password/Models/EncryptionResult.dart';
 
-abstract class HashAlgRepo {
-  Future<String> hashPassword(HashAlg ha, Password password);
-  Future<Password> dehashPassword(HashAlg ha, String hashedPassword);
+abstract interface class HashAlgRepo {
+  Future<EncryptionResult> encryptPassword({
+    required String websitePassword,
+    required String masterPassword,
+  });
+  Future<String> decryptPassword({
+    required String masterPassword,
+    required List<int> salt,
+    required SecretBox secretBox,
+  });
 }
