@@ -13,7 +13,6 @@ class VaultService {
     if (_vault?.key == null) {
       throw Exception("Vault is locked.");
     }
-
     return _vault!.key!;
   }
 
@@ -24,7 +23,6 @@ class VaultService {
 
   Future<void> createVault(String masterPassword) async {
     final salt = generateSalt();
-
     final pbkdf2 = Pbkdf2(
       macAlgorithm: Hmac.sha256(),
       iterations: 100000,
