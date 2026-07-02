@@ -19,7 +19,6 @@ class EncryptionImpl implements EncryptionRepo {
   @override
   Future<String?> decryptPassword({
     required EncryptedPassword encryptedPassword,
-    required String masterPassword,
     required SecretKey key,
   }) async {
     return await encryptionScript.decrypt(key, encryptedPassword);

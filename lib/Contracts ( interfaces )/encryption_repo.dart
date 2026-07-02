@@ -8,7 +8,6 @@ abstract interface class EncryptionRepo {
   });
   Future<String?> decryptPassword({
     required EncryptedPassword encryptedPassword,
-    required String masterPassword,
     required SecretKey key,
   });
 }
