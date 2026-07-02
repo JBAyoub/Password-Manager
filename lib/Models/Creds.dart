@@ -1,9 +1,8 @@
-import 'package:password/Models/Password.dart';
-import 'package:password/Utils/extensions.dart';
+import 'package:password/Models/encrypted_password.dart';
 
 class Creds {
   final int _id;
-  final Password _p;
+  final EncryptedPassword _p;
   String username;
   String website;
 
@@ -15,16 +14,12 @@ class Creds {
   });
 
   int get id => _id;
-  Password get p => _p;
+  EncryptedPassword get p => _p;
 
   factory Creds.fromJson(Map<String, dynamic> json) {
     return Creds(
       id: json['id'] as int,
-      p: Password(
-        hashed: json['hashed_password'].toString(),
-        algorithmUsed: HashAlgToString.parseString(json['used_alg'].toString()),
-        passwordStrength: double.tryParse(json['calculcated_strength']) ?? 0.0,
-      ),
+      p: EncryptedPassword(cipherText: '', nonce: '', mac: ''),
       username: json['username'].toString(),
       website: json['website'].toString(),
     );
