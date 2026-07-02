@@ -1,5 +1,4 @@
 import 'package:cryptography/cryptography.dart';
-import 'package:password/Models/Creds.dart';
 
 class Vault {
   final int id;
@@ -8,7 +7,16 @@ class Vault {
 
   SecretKey? key;
 
-  List<Creds>? credentials;
+  final List<int> verificationCipherText;
+  final List<int> verificationNonce;
+  final List<int> verificationMac;
 
-  Vault({required this.salt, required this.id, this.credentials, this.key});
+  Vault({
+    required this.id,
+    required this.salt,
+    this.key,
+    required this.verificationCipherText,
+    required this.verificationNonce,
+    required this.verificationMac,
+  });
 }

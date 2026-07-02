@@ -1,18 +1,21 @@
+import 'dart:convert';
 import 'package:cryptography/cryptography.dart';
-import 'package:password/Models/encrypted_password.dart';
+import 'package:password/Services/vault_service.dart';
 
 class EncryptionScript {
-  Future<EncryptedPassword?> encrypt(
-    SecretKey secretKey,
-    String password,
-  ) async {
-    return null;
+  final VaultService vs;
+  EncryptionScript(this.vs);
+  final Cipher algorithm = AesGcm.with256bits();
+
+  Future<SecretBox> encrypt(String password) async {
+    return await algorithm.encrypt(utf8.encode(password), secretKey: vs.key);
   }
 
-  Future<String?> decrypt(
-    SecretKey secretKey,
-    EncryptedPassword password,
-  ) async {
-    return null;
+  Future<String> decrypt(SecretBox box) async {
+    if (vs.vault?.key == null) {
+      throw Exception("Vault is locked.");
+    }
+    final bytes = await algorithm.decrypt(box, secretKey: vs.vault!.key!);
+    return utf8.decode(bytes);
   }
 }
