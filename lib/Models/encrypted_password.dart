@@ -2,6 +2,7 @@ class EncryptedPassword {
   final String cipherText;
   final String nonce;
   final String mac;
+
   EncryptedPassword({
     required this.cipherText,
     required this.nonce,
