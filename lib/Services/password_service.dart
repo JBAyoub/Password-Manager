@@ -1,6 +1,5 @@
 import 'package:cryptography/cryptography.dart';
 import 'package:password/Contracts%20(%20interfaces%20)/password_repo.dart';
-import 'package:password/Contracts%20(%20interfaces%20)/vault_repo.dart';
 import 'package:password/Models/encrypted_password.dart';
 import 'package:password/Services/EncryptionService.dart';
 import 'package:password/Services/vault_service.dart';
