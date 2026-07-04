@@ -3,7 +3,7 @@ import 'package:postgres/postgres.dart';
 class DatabaseConnection {
   late final Connection connection;
 
-  Future<void> connect() async {
+  Future<Connection> connect() async {
     connection = await Connection.open(
       Endpoint(
         host: 'localhost',
@@ -13,6 +13,7 @@ class DatabaseConnection {
         password: 'takhrafih',
       ),
     );
+    return connection;
   }
 
   Future<void> close() async {

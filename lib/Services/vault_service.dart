@@ -8,7 +8,7 @@ class VaultService {
   Vault? _vault;
   Vault? get vault => _vault;
   VaultRepo vaultRepo;
-  VaultService(this.vaultRepo, vr);
+  VaultService(this.vaultRepo);
   SecretKey get key {
     if (_vault?.key == null) {
       throw Exception("Vault is locked.");
@@ -21,7 +21,7 @@ class VaultService {
     return List<int>.generate(16, (_) => random.nextInt(256));
   }
 
-  Future<void> createVault(String masterPassword) async {
+  Future<void> createSecretKey(String masterPassword) async {
     final salt = generateSalt();
     final pbkdf2 = Pbkdf2(
       macAlgorithm: Hmac.sha256(),
@@ -33,16 +33,20 @@ class VaultService {
       secretKey: SecretKey(utf8.encode(masterPassword)),
       nonce: salt,
     );
+    _vault?.key = secretKey;
+  }
 
+  Future<void> createVault() async {
+    final salt = generateSalt();
     final algorithm = AesGcm.with256bits();
     final verificationBox = await algorithm.encrypt(
-      utf8.encode("PASSWORD_MANAGER_VAULT"),
-      secretKey: secretKey,
+      utf8.encode("YOU_REALLY_SHOULD_CHOOSE_A_STRONGER_VERIFICATION_TEXT"),
+      secretKey: _vault!.key!,
     );
     final vault = Vault(
       id: 1,
       salt: salt,
-      key: secretKey,
+      key: _vault!.key!,
       verificationCipherText: verificationBox.cipherText,
       verificationNonce: verificationBox.nonce,
       verificationMac: verificationBox.mac.bytes,
@@ -81,7 +85,7 @@ class VaultService {
       final bytes = await algorithm.decrypt(verificationBox, secretKey: key);
       final text = utf8.decode(bytes);
 
-      if (text != "PASSWORD_MANAGER_VAULT") {
+      if (text != "YOU_REALLY_SHOULD_CHOOSE_A_STRONGER_VERIFICATION_TEXT") {
         throw Exception("Incorrect master password.");
       }
       _vault!.key = key;

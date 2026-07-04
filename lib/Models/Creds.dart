@@ -19,9 +19,20 @@ class Creds {
   factory Creds.fromJson(Map<String, dynamic> json) {
     return Creds(
       id: json['id'] as int,
-      p: EncryptedPassword(cipherText: '', nonce: '', mac: ''),
+      p: EncryptedPassword.fromJson(
+        json['encrypted_password'] as Map<String, dynamic>,
+      ),
       username: json['username'].toString(),
       website: json['website'].toString(),
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': _id,
+      'encrypted_password': _p.toJson(),
+      'username': username,
+      'website': website,
+    };
   }
 }

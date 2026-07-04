@@ -9,8 +9,14 @@ class EncryptedPassword {
     required this.mac,
   });
 
-  // HashAlg get algorithmUsed => _algorithmUsed;
-  // double calculateStrength(Password password) {
-  //   return 5.0;
-  // }
+  factory EncryptedPassword.fromJson(Map<String, dynamic> json) {
+    return EncryptedPassword(
+      cipherText: json['cipherText'],
+      nonce: json['nonce'],
+      mac: json['mac'],
+    );
+  }
+  Map<String, String> toJson() {
+    return {'cipherText': cipherText, 'nonce': nonce, 'mac': mac};
+  }
 }

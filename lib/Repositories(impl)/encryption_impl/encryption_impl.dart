@@ -9,11 +9,11 @@ class EncryptionImpl implements EncryptionRepo {
 
   @override
   Future<SecretBox?> encryptPassword({required String websitePassword}) async {
-    return await encryptionService.encrypt(websitePassword);
+    return null;
   }
 
   @override
   Future<String?> decryptPassword({required SecretBox box}) async {
-    return await encryptionService.decrypt(box);
+    return null;
   }
 }

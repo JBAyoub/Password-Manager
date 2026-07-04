@@ -19,4 +19,25 @@ class Vault {
     required this.verificationNonce,
     required this.verificationMac,
   });
+
+  factory Vault.fromJson(Map<String, dynamic> json) {
+    return Vault(
+      id: json['id'],
+      salt: List<int>.from(json['salt']),
+      key: null,
+      verificationCipherText: List<int>.from(json['verificationCipherText']),
+      verificationNonce: List<int>.from(json['verificationNonce']),
+      verificationMac: List<int>.from(json['verificationMac']),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'salt': salt,
+      'verificationCipherText': verificationCipherText,
+      'verificationNonce': verificationNonce,
+      'verificationMac': verificationMac,
+    };
+  }
 }
