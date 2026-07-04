@@ -18,11 +18,6 @@ class LocalFileCredsImp implements CredRepo {
   }
 
   @override
-  Future<List<Creds>?> getFavorties() {
-    throw UnimplementedError();
-  }
-
-  @override
   Future<List<Creds>> importCreds() {
     throw UnimplementedError();
   }

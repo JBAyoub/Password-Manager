@@ -1,8 +1,46 @@
-import 'package:password/Contracts%20(%20interfaces%20)/encryption_repo.dart';
-import 'package:password/Services/vault_service.dart';
+import 'dart:convert';
+import 'dart:math';
+
+import 'package:cryptography/cryptography.dart';
+import 'package:password/Contracts%20(%20interfaces%20)/password_repo.dart';
+import 'package:password/Models/encrypted_password.dart';
+import 'package:uuid/uuid.dart';
 
 class EncryptionService {
-  final EncryptionRepo encryptionRepo;
-  final VaultService vs;
-  EncryptionService(this.encryptionRepo, this.vs);
+  final PasswordRepo passwordRepo;
+  EncryptionService(this.passwordRepo);
+  final Cipher _algorithm = AesGcm.with256bits();
+  var uuid = Uuid();
+  Future<EncryptedPassword> encrypt({
+    required String password,
+    required SecretKey key,
+  }) async {
+    final secretBox = await _algorithm.encrypt(
+      utf8.encode(password),
+      secretKey: key,
+    );
+    return EncryptedPassword(
+      id: Random().nextInt(
+        1000000,
+      ), // Generate a unique ID for the encrypted password,
+      cipherText: secretBox.cipherText,
+      nonce: secretBox.nonce,
+      mac: secretBox.mac.bytes,
+    );
+  }
+
+  Future<String> decrypt({
+    required EncryptedPassword password,
+    required SecretKey key,
+  }) async {
+    final secretBox = SecretBox(
+      password.cipherText,
+      nonce: password.nonce,
+      mac: Mac(password.mac),
+    );
+
+    final bytes = await _algorithm.decrypt(secretBox, secretKey: key);
+
+    return utf8.decode(bytes);
+  }
 }

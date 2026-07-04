@@ -3,7 +3,6 @@ import 'package:password/Models/Creds.dart';
 abstract interface class CredRepo {
   Future<Creds?> searchCred(int id);
   Future<List<Creds>?> displayAll();
-  Future<List<Creds>?> getFavorties();
   Future<Creds?> searchByWebsite(String website);
   Future<Creds?> searchByUsername(String username);
   Future<void> saveCreds(List<Creds> listOfCredentials);
