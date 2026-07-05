@@ -5,8 +5,6 @@ class Vault {
 
   final List<int> salt;
 
-  SecretKey? key;
-
   final List<int> verificationCipherText;
   final List<int> verificationNonce;
   final List<int> verificationMac;
@@ -14,7 +12,6 @@ class Vault {
   Vault({
     required this.id,
     required this.salt,
-    this.key,
     required this.verificationCipherText,
     required this.verificationNonce,
     required this.verificationMac,
@@ -24,7 +21,6 @@ class Vault {
     return Vault(
       id: json['id'],
       salt: List<int>.from(json['salt']),
-      key: null,
       verificationCipherText: List<int>.from(json['verificationCipherText']),
       verificationNonce: List<int>.from(json['verificationNonce']),
       verificationMac: List<int>.from(json['verificationMac']),

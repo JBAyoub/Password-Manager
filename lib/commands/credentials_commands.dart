@@ -4,11 +4,15 @@ import 'package:password/Services/password_service.dart';
 import 'package:password/Services/vault_service.dart';
 import 'package:args/args.dart';
 
-class Savecredentials {
+class CredentialCommands {
   final VaultService vaultService;
   final PasswordService passwordService;
   final CredsService credsService;
-  Savecredentials(this.vaultService, this.passwordService, this.credsService);
+  CredentialCommands(
+    this.vaultService,
+    this.passwordService,
+    this.credsService,
+  );
   ArgParser saveCommand = ArgParser();
   ArgParser get saveCredentials => ArgParser()
     ..addOption(
@@ -35,7 +39,7 @@ class Savecredentials {
     ..addCommand('save', saveCommand);
 
   Future<void> saveCredentialsCommand(List<String>? args) async {
-    if (args == null || args.length < 4) {
+    if (args == null || args.length < 3) {
       throw Exception("No arguments provided for saving credentials.");
     }
     try {
@@ -43,10 +47,9 @@ class Savecredentials {
       final String username = results['username'];
       final String password = results['password'];
       final String website = results['website'];
-      final secretKey = vaultService.key;
       final encryptedPassword = await passwordService.encryptAndSavePassword(
         password,
-        secretKey,
+        vaultService.currentKey!,
       );
       await credsService.addCred(
         Creds(p: encryptedPassword, username: username, website: website),

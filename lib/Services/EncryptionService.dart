@@ -2,13 +2,10 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:cryptography/cryptography.dart';
-import 'package:password/Contracts%20(%20interfaces%20)/password_repo.dart';
 import 'package:password/Models/encrypted_password.dart';
 import 'package:uuid/uuid.dart';
 
 class EncryptionService {
-  final PasswordRepo passwordRepo;
-  EncryptionService(this.passwordRepo);
   final Cipher _algorithm = AesGcm.with256bits();
   var uuid = Uuid();
   Future<EncryptedPassword> encrypt({

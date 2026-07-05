@@ -20,7 +20,7 @@ class PasswordService {
   ) async {
     final encryptedPassword = await encryptionService.encrypt(
       password: password,
-      key: vr.vault!.key!,
+      key: vr.currentKey!,
     );
     await pr.savePassword(encryptedPassword);
     return encryptedPassword;
@@ -29,7 +29,7 @@ class PasswordService {
   Future<String> decryptPassword(EncryptedPassword encryptedPassword) async {
     return await encryptionService.decrypt(
       password: encryptedPassword,
-      key: vr.vault!.key!,
+      key: vr.currentKey!,
     );
   }
 }
