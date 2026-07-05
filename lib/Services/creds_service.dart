@@ -8,4 +8,9 @@ class CredsService {
   Future<void> addCred(Creds c) async {
     await _credRepo.addCred(c);
   }
+
+  Future<void> displayAll() async {
+    // Implementation for displaying all credentials
+    await _credRepo.displayAll();
+  }
 }

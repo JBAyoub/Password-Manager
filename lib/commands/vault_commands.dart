@@ -53,8 +53,8 @@ class VaultCommands {
       final masterPassword = results['master-password'] as String;
       await vaultService.loadVault();
       await vaultService.unlockVault(masterPassword);
-    } catch (e) {
-      print("Error unlocking vault: $e");
+    } on FormatException catch (e) {
+      print("Error unlocking vault: ${e.message}");
       print(unlockParser.usage);
     }
   }

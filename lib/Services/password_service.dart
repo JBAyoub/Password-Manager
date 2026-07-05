@@ -18,6 +18,9 @@ class PasswordService {
     String password,
     SecretKey key,
   ) async {
+    if (vr.currentKey == null) {
+      throw Exception("Vault is not unlocked. Cannot encrypt password.");
+    }
     final encryptedPassword = await encryptionService.encrypt(
       password: password,
       key: vr.currentKey!,

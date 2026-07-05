@@ -15,6 +15,10 @@ class CommandRunner {
     switch (args.first) {
       case 'vault':
         await vaultCommands.run(args);
+        break;
+      case 'credentials':
+        await credentialsCommands.run(args);
+        break;
       default:
         print('Unknown command: $args');
     }

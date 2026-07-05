@@ -1,10 +1,6 @@
-import 'package:cryptography/cryptography.dart';
-
 class Vault {
   final int id;
-
   final List<int> salt;
-
   final List<int> verificationCipherText;
   final List<int> verificationNonce;
   final List<int> verificationMac;
