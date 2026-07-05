@@ -6,19 +6,14 @@ class Creds {
   String username;
   String website;
 
-  Creds({
-    required this._id,
-    required this._p,
-    required this.username,
-    required this.website,
-  });
+  Creds({required this._p, required this.username, required this.website})
+    : _id = DateTime.now().millisecondsSinceEpoch;
 
   int get id => _id;
   EncryptedPassword get p => _p;
 
   factory Creds.fromJson(Map<String, dynamic> json) {
     return Creds(
-      id: json['id'] as int,
       p: EncryptedPassword.fromJson(
         json['encrypted_password'] as Map<String, dynamic>,
       ),

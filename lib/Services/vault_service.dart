@@ -36,11 +36,11 @@ class VaultService {
     _vault?.key = secretKey;
   }
 
-  Future<void> createVault() async {
+  Future<void> createVault(String verificationText) async {
     final salt = generateSalt();
     final algorithm = AesGcm.with256bits();
     final verificationBox = await algorithm.encrypt(
-      utf8.encode("YOU_REALLY_SHOULD_CHOOSE_A_STRONGER_VERIFICATION_TEXT"),
+      utf8.encode(verificationText),
       secretKey: _vault!.key!,
     );
     final vault = Vault(

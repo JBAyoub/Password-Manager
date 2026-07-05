@@ -14,12 +14,16 @@ class PasswordService {
     required this.encryptionService,
   });
 
-  Future<void> encryptAndSavePassword(String password, SecretKey key) async {
+  Future<EncryptedPassword> encryptAndSavePassword(
+    String password,
+    SecretKey key,
+  ) async {
     final encryptedPassword = await encryptionService.encrypt(
       password: password,
       key: vr.vault!.key!,
     );
     await pr.savePassword(encryptedPassword);
+    return encryptedPassword;
   }
 
   Future<String> decryptPassword(EncryptedPassword encryptedPassword) async {
