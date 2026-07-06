@@ -18,6 +18,6 @@ class DatabaseConnection {
   }
 
   Future<void> close() async {
-    await connection.close();
+    await connection.close(force: true);
   }
 }

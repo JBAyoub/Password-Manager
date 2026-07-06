@@ -1,15 +1,12 @@
 import 'package:password/Models/encrypted_password.dart';
 
 class Creds {
-  final int _id;
   final EncryptedPassword _p;
   String username;
   String website;
 
-  Creds({required this._p, required this.username, required this.website})
-    : _id = DateTime.now().millisecondsSinceEpoch;
+  Creds({required this._p, required this.username, required this.website});
 
-  int get id => _id;
   EncryptedPassword get p => _p;
 
   factory Creds.fromJson(Map<String, dynamic> json) {
@@ -24,7 +21,6 @@ class Creds {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': _id,
       'encrypted_password': _p.toJson(),
       'username': username,
       'website': website,

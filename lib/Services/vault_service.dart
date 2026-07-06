@@ -55,13 +55,17 @@ class VaultService {
     _currentKey = key;
   }
 
-  Future<void> loadVault() async {
+  Future<void> loadVault(String masterPassword) async {
     _vault = await vaultRepo.loadVault();
+    _currentKey = await _deriveKey(
+      masterPassword: masterPassword,
+      salt: _vault!.salt,
+    );
   }
 
   Future<void> unlockVault(String masterPassword) async {
     if (_vault == null) {
-      throw Exception("Vault has not been loaded.");
+      await loadVault(masterPassword);
     }
     final pbkdf2 = Pbkdf2(
       macAlgorithm: Hmac.sha256(),

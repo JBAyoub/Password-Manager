@@ -1,17 +1,17 @@
 import 'package:password/Models/Creds.dart';
+import 'package:password/Services/EncryptionService.dart';
 import 'package:password/Services/creds_service.dart';
-import 'package:password/Services/password_service.dart';
 import 'package:password/Services/vault_service.dart';
 import 'package:args/args.dart';
 
 class CredentialCommands {
   final VaultService vaultService;
-  final PasswordService passwordService;
   final CredsService credsService;
+  final EncryptionService encryptionService;
   CredentialCommands(
     this.vaultService,
-    this.passwordService,
     this.credsService,
+    this.encryptionService,
   );
 
   final createParser = ArgParser()
@@ -49,9 +49,11 @@ class CredentialCommands {
       final String username = results['username'];
       final String password = results['password'];
       final String website = results['website'];
-      final encryptedPassword = await passwordService.encryptAndSavePassword(
-        password,
-        vaultService.currentKey!,
+      await vaultService.unlockVault(results['master-password']);
+
+      final encryptedPassword = await encryptionService.encrypt(
+        password: password,
+        key: vaultService.currentKey!,
       );
       await credsService.addCred(
         Creds(p: encryptedPassword, username: username, website: website),
@@ -59,6 +61,7 @@ class CredentialCommands {
     } on FormatException catch (e) {
       throw Exception("Error parsing arguments: ${e.message}");
     }
+    print("Credentials saved successfully.");
   }
 
   Future<void> displayCredentials(List<String> sublist) async {

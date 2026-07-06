@@ -7,37 +7,41 @@ class PostgresCredsImp implements CredRepo {
   PostgresCredsImp(this.dbService);
   @override
   Future<void> addCred(Creds c) async {
-    await dbService.connect();
     await dbService.execute(
       '''
-        INSERT INTO credentials (username, password, website, is_favorite)
-        VALUES (\$1, \$2, \$3, \$4)
+       INSERT INTO credentials (
+      website,
+      username,
+      cipher_text,
+      nonce,
+      mac
+  )
+  VALUES (
+      @website,
+      @username,
+      @cipherText,
+      @nonce,
+      @mac
+  )
         ''',
       parameters: {
-        'username': c.username,
-        'password': c.p,
         'website': c.website,
-        'is_favorite': c.id,
+        'username': c.username,
+        'cipherText': c.p.cipherText,
+        'nonce': c.p.nonce,
+        'mac': c.p.mac,
       },
     );
-    await dbService.close();
   }
 
   @override
   Future<void> delete(Creds c) async {
-    await dbService.connect();
-    await dbService.execute(
-      'DELETE FROM credentials WHERE id = \$1',
-      parameters: {'id': c.id},
-    );
-    await dbService.close();
+    throw UnimplementedError();
   }
 
   @override
   Future<List<Creds>?> displayAll() async {
-    await dbService.connect();
     final result = await dbService.query('SELECT * FROM credentials');
-    await dbService.close();
     return result
         .map((row) => Creds.fromJson(row as Map<String, dynamic>))
         .toList();
@@ -45,9 +49,7 @@ class PostgresCredsImp implements CredRepo {
 
   @override
   Future<List<Creds>> importCreds() async {
-    await dbService.connect();
     final result = await dbService.query('SELECT * FROM credentials');
-    await dbService.close();
     return result
         .map((row) => Creds.fromJson(row as Map<String, dynamic>))
         .toList();
@@ -55,7 +57,6 @@ class PostgresCredsImp implements CredRepo {
 
   @override
   Future<void> saveCreds(List<Creds> listOfCredentials) async {
-    await dbService.connect();
     for (var c in listOfCredentials) {
       await dbService.execute(
         '''
@@ -66,21 +67,17 @@ class PostgresCredsImp implements CredRepo {
           'username': c.username,
           'password': c.p,
           'website': c.website,
-          'is_favorite': c.id,
         },
       );
     }
-    await dbService.close();
   }
 
   @override
   Future<Creds?> searchByUsername(String username) async {
-    await dbService.connect();
     final result = await dbService.query(
       'SELECT * FROM credentials WHERE username = \$1',
       [username],
     );
-    await dbService.close();
     return result.isEmpty
         ? null
         : Creds.fromJson(result.first as Map<String, dynamic>);
@@ -88,12 +85,10 @@ class PostgresCredsImp implements CredRepo {
 
   @override
   Future<Creds?> searchByWebsite(String website) async {
-    await dbService.connect();
     final result = await dbService.query(
       'SELECT * FROM credentials WHERE website = \$1',
       [website],
     );
-    await dbService.close();
     return result.isEmpty
         ? null
         : Creds.fromJson(result.first as Map<String, dynamic>);
@@ -101,12 +96,10 @@ class PostgresCredsImp implements CredRepo {
 
   @override
   Future<Creds?> searchCred(int id) async {
-    await dbService.connect();
     final result = await dbService.query(
       'SELECT * FROM credentials WHERE id = \$1',
       [id],
     );
-    await dbService.close();
     return result.isEmpty
         ? null
         : Creds.fromJson(result.first as Map<String, dynamic>);
@@ -114,7 +107,6 @@ class PostgresCredsImp implements CredRepo {
 
   @override
   Future<void> update(int id) async {
-    await dbService.connect();
     final c = await searchCred(id);
     if (c == null) {
       throw Exception("Credential not found.");
@@ -128,6 +120,5 @@ class PostgresCredsImp implements CredRepo {
         'id': id,
       },
     );
-    await dbService.close();
   }
 }
