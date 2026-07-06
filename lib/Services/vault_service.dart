@@ -8,8 +8,8 @@ import 'package:password/Services/EncryptionService.dart';
 class VaultService {
   Vault? _vault;
   Vault? get vault => _vault;
-  VaultRepo vaultRepo;
-  EncryptionService encryptionService = EncryptionService();
+  final VaultRepo vaultRepo;
+  final EncryptionService encryptionService = EncryptionService();
   VaultService(this.vaultRepo);
   SecretKey? _currentKey;
   SecretKey? get currentKey => _currentKey;

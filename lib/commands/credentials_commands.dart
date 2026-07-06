@@ -64,8 +64,10 @@ class CredentialCommands {
     print("Credentials saved successfully.");
   }
 
-  Future<void> displayCredentials(List<String> sublist) async {
+  Future<void> displayCredentials(List<String> args) async {
     try {
+      final ArgResults results = displayParser.parse(args);
+      await vaultService.unlockVault(results['master-password']);
       credsService.displayAll();
     } on FormatException catch (e) {
       print("Error displaying credentials: ${e.message}");

@@ -1,5 +1,6 @@
 import 'package:password/Contracts%20(%20interfaces%20)/cred_repo.dart';
 import 'package:password/Models/Creds.dart';
+import 'package:password/Models/encrypted_password.dart';
 import 'package:password/Services/database_service.dart';
 
 class PostgresCredsImp implements CredRepo {
@@ -42,9 +43,21 @@ class PostgresCredsImp implements CredRepo {
   @override
   Future<List<Creds>?> displayAll() async {
     final result = await dbService.query('SELECT * FROM credentials');
-    return result
-        .map((row) => Creds.fromJson(row as Map<String, dynamic>))
-        .toList();
+    return result.map((row) {
+      final values = row as List<dynamic>;
+      return Creds(
+        p: EncryptedPassword(
+          id: values[0] as int,
+          cipherText: (values[3] as List<dynamic>)
+              .map((e) => e as int)
+              .toList(),
+          nonce: (values[4] as List<dynamic>).map((e) => e as int).toList(),
+          mac: (values[5] as List<dynamic>).map((e) => e as int).toList(),
+        ),
+        username: values[2].toString(),
+        website: values[1].toString(),
+      );
+    }).toList();
   }
 
   @override

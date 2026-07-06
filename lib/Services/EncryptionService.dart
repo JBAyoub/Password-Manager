@@ -35,9 +35,7 @@ class EncryptionService {
       nonce: password.nonce,
       mac: Mac(password.mac),
     );
-
     final bytes = await _algorithm.decrypt(secretBox, secretKey: key);
-
     return utf8.decode(bytes);
   }
 }

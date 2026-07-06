@@ -4,24 +4,23 @@ import 'package:postgres/postgres.dart';
 class DatabaseService {
   final DatabaseConnection connection;
   DatabaseService({required this.connection});
-  Future<void> connect() async => await connection.connect();
 
-  Future<void> close() async => await connection.close();
-
-  Future<List<List<dynamic>>> query(String sql, [List<dynamic>? params]) async {
-    final conn = await connection.connect();
-
-    return await conn.execute(sql, parameters: params);
+  Future<Result> query(String sql, [List<dynamic>? params]) async {
+    await connection.connect(); // Ensure the connection is established
+    final results = await connection.connection.execute(
+      Sql.named(sql),
+      parameters: params,
+    );
+    await connection.close(); // Close the connection after the query
+    return results;
   }
 
   Future<void> execute(
     String sql, {
     Map<String, dynamic> parameters = const {},
   }) async {
-    if (!connection.connection.isOpen) {
-      await connection.connect();
-    }
+    await connection.connect(); // Ensure the connection is established
     await connection.connection.execute(Sql.named(sql), parameters: parameters);
-    await connection.connection.close();
+    await connection.close(); // Close the connection after the execution
   }
 }

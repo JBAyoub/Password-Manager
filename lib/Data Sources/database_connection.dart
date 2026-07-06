@@ -1,10 +1,14 @@
 import 'package:postgres/postgres.dart';
 
 class DatabaseConnection {
-  late final Connection connection;
-
-  Future<Connection> connect() async {
-    connection = await Connection.open(
+  Connection? _connection;
+  Future<void> connect() async {
+    if (_connection != null) {
+      print("Database is already connected.");
+      return;
+    }
+    print("Connecting to the database...");
+    _connection = await Connection.open(
       Endpoint(
         host: 'localhost',
         port: 5432,
@@ -14,10 +18,17 @@ class DatabaseConnection {
       ),
       settings: const ConnectionSettings(sslMode: SslMode.disable),
     );
-    return connection;
+  }
+
+  Connection get connection {
+    if (_connection == null) {
+      throw Exception("Database has not been connected.");
+    }
+    return _connection!;
   }
 
   Future<void> close() async {
-    await connection.close(force: true);
+    await _connection?.close();
+    _connection = null;
   }
 }
