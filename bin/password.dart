@@ -21,8 +21,8 @@ void main(List<String>? arguments) async {
   final passwordRepo = PasswordIpm(db);
   final EncryptionService encryptionService = EncryptionService();
   final passwordService = PasswordService(
-    vr: vaultService,
-    pr: passwordRepo,
+    vaultService: vaultService,
+    passwordRepo: passwordRepo,
     encryptionService: encryptionService,
   );
   final vaultCommands = VaultCommands(vaultService);

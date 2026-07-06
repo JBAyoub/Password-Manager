@@ -5,12 +5,12 @@ import 'package:password/Services/EncryptionService.dart';
 import 'package:password/Services/vault_service.dart';
 
 class PasswordService {
-  final VaultService vr;
-  final PasswordRepo pr;
+  final VaultService vaultService;
+  final PasswordRepo passwordRepo;
   final EncryptionService encryptionService;
   PasswordService({
-    required this.vr,
-    required this.pr,
+    required this.vaultService,
+    required this.passwordRepo,
     required this.encryptionService,
   });
 
@@ -18,21 +18,21 @@ class PasswordService {
     String password,
     SecretKey key,
   ) async {
-    if (vr.currentKey == null) {
+    if (vaultService.currentKey == null) {
       throw Exception("Vault is not unlocked. Cannot encrypt password.");
     }
     final encryptedPassword = await encryptionService.encrypt(
       password: password,
-      key: vr.currentKey!,
+      key: vaultService.currentKey!,
     );
-    await pr.savePassword(encryptedPassword);
+    await passwordRepo.savePassword(encryptedPassword);
     return encryptedPassword;
   }
 
   Future<String> decryptPassword(EncryptedPassword encryptedPassword) async {
     return await encryptionService.decrypt(
       password: encryptedPassword,
-      key: vr.currentKey!,
+      key: vaultService.currentKey!,
     );
   }
 }
