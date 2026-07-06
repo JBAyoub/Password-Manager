@@ -12,6 +12,7 @@ class DatabaseConnection {
         username: 'postgres',
         password: 'takhrafih',
       ),
+      settings: const ConnectionSettings(sslMode: SslMode.disable),
     );
     return connection;
   }

@@ -19,6 +19,9 @@ class DatabaseService {
     Map<String, dynamic> parameters = const {},
   }) async {
     final conn = await connection.connect();
-    await conn.execute(Sql(sql), parameters: parameters);
+
+    await conn.execute(Sql.named(sql), parameters: parameters);
+
+    await connection.close();
   }
 }

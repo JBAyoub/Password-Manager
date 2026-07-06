@@ -50,7 +50,6 @@ class VaultService {
       verificationNonce: verification.nonce,
       verificationMac: verification.mac,
     );
-
     await vaultRepo.saveVault(vault: vault);
     _vault = vault;
     _currentKey = key;
@@ -75,7 +74,6 @@ class VaultService {
       nonce: _vault!.salt,
     );
     final algorithm = AesGcm.with256bits();
-
     final verificationBox = SecretBox(
       _vault!.verificationCipherText,
       nonce: _vault!.verificationNonce,
@@ -90,8 +88,8 @@ class VaultService {
         throw Exception("Incorrect master password.");
       }
       _currentKey = key;
-    } on SecretBoxAuthenticationError {
-      throw Exception("Incorrect master password.");
+    } on SecretBoxAuthenticationError catch (e) {
+      throw Exception("Incorrect master password. ${e.message}");
     }
   }
 

@@ -1,4 +1,4 @@
-import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:password/Contracts%20(%20interfaces%20)/vault_repo.dart';
 import 'package:password/Models/vault.dart';
@@ -10,43 +10,61 @@ class VaultImpl implements VaultRepo {
 
   @override
   Future<Vault> loadVault() async {
-    await dbService.connect();
-    final result = await dbService.query(
-      'SELECT payload FROM vault WHERE id = 1',
-    );
-    await dbService.close();
+    final result = await dbService.query('SELECT * FROM vaults WHERE id = 1');
     if (result.isEmpty) {
       throw Exception("Vault not found.");
     }
-    final payload = result.first[0] as String;
-    final vaultJson = jsonDecode(payload);
-    await dbService.close();
-    return Vault.fromJson(vaultJson);
+    final row = result.first;
+
+    return Vault(
+      id: row[0] as int,
+      salt: (row[1] as Uint8List).toList(),
+      verificationCipherText: (row[2] as Uint8List).toList(),
+      verificationNonce: (row[3] as Uint8List).toList(),
+      verificationMac: (row[4] as Uint8List).toList(),
+    );
   }
 
   @override
   Future<void> saveVault({required Vault vault}) async {
-    await dbService.connect();
-    final payload = jsonEncode(vault.toJson());
     await dbService.execute(
       '''
-      INSERT INTO vault (id, payload)
-      VALUES (1, \$1)
-      ON CONFLICT (id) DO UPDATE SET
-        payload = EXCLUDED.payload
-      ''',
-      parameters: {'payload': payload},
+  INSERT INTO vaults (
+      id,
+      salt,
+      verification_cipher,
+      verification_nonce,
+      verification_mac
+  )
+  VALUES (
+      @id,
+      @salt,
+      @cipher,
+      @nonce,
+      @mac
+  )
+  ON CONFLICT (id)
+  DO UPDATE SET
+      salt = EXCLUDED.salt,
+      verification_cipher = EXCLUDED.verification_cipher,
+      verification_nonce = EXCLUDED.verification_nonce,
+      verification_mac = EXCLUDED.verification_mac;
+  ''',
+      parameters: {
+        'id': vault.id,
+        'salt': Uint8List.fromList(vault.salt),
+        'cipher': Uint8List.fromList(vault.verificationCipherText),
+        'nonce': Uint8List.fromList(vault.verificationNonce),
+        'mac': Uint8List.fromList(vault.verificationMac),
+      },
     );
-    await dbService.close();
   }
 
   @override
   Future<void> deleteVault([int id = 1]) async {
-    await dbService.connect();
     await dbService.execute(
-      'DELETE FROM vault WHERE id = \$1',
+      'DELETE FROM vaults WHERE id = @id',
       parameters: {'id': id},
     );
-    await dbService.close();
   }
 }
