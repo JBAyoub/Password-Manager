@@ -25,10 +25,6 @@ class VaultCommands {
         await unlockVault(args.sublist(2));
         break;
 
-      case 'lock':
-        vaultService.lockVault();
-        break;
-
       default:
         print('Unknown vault command.');
     }

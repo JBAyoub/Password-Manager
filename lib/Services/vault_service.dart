@@ -100,8 +100,4 @@ class VaultService {
       return;
     }
   }
-
-  void lockVault() {
-    _currentKey = null;
-  }
 }
