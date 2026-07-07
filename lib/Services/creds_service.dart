@@ -6,8 +6,8 @@ import 'package:password/Services/vault_service.dart';
 class CredsService {
   final VaultService vaultService;
   final CredRepo _credRepo;
-  final EncryptionService encryptionService = EncryptionService();
-  CredsService(this.vaultService, this._credRepo);
+  final EncryptionService _encryptionService;
+  CredsService(this.vaultService, this._credRepo, this._encryptionService);
 
   Future<void> addCred(Creds c) async {
     await _credRepo.addCred(c);
@@ -18,6 +18,14 @@ class CredsService {
       username: username,
     );
     await displayListSearch(listOfCreds);
+  }
+
+  Future<Creds?> searchById(int id) async {
+    return await _credRepo.searchById(id: id);
+  }
+
+  Future<void> deleteCred({required int id}) async {
+    await _credRepo.delete(id: id);
   }
 
   Future<void> searchByWebsite({required String website}) async {
@@ -38,7 +46,7 @@ class CredsService {
         print("---------------------------------");
         print(
           'ID:${cred.id} | Website: ${cred.website} | Username: ${cred.username}'
-          ' | Password: ${await encryptionService.decrypt(password: cred.p, key: vaultService.currentKey!)}',
+          ' | Password: ${await _encryptionService.decrypt(password: cred.p, key: vaultService.currentKey!)}',
         );
         print("---------------------------------");
       }

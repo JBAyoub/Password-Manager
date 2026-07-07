@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:password/Models/Creds.dart';
 import 'package:password/Services/EncryptionService.dart';
 import 'package:password/Services/creds_service.dart';
@@ -30,11 +32,9 @@ class CredentialCommands {
 
   final deleteParser = ArgParser()
     ..addOption("master-password", abbr: "m", mandatory: true)
-    ..addOption("username", abbr: "u", mandatory: true);
+    ..addOption("id", abbr: "i");
 
   Future<void> run(List<String>? args) async {
-    print(displayParser.usage);
-    print(createParser.usage);
     if (args == null || args.length < 2) {
       print('No vault command provided.');
       return;
@@ -84,7 +84,7 @@ class CredentialCommands {
     try {
       final ArgResults results = displayParser.parse(args);
       await vaultService.unlockVault(results['master-password']);
-      credsService.displayAll();
+      await credsService.displayAll();
     } on FormatException catch (e) {
       print("Error displaying credentials: ${e.message}");
       print(displayParser.usage);
@@ -112,5 +112,34 @@ class CredentialCommands {
     }
   }
 
-  Future<void> deleteCredentials(List<String>? args) async {}
+  Future<void> deleteCredentials(List<String>? args) async {
+    if (args == null || args.isEmpty) {
+      print("No arguments were provided for the search.");
+      print(deleteParser.usage);
+      return;
+    }
+    final ArgResults results = deleteParser.parse(args);
+    await vaultService.unlockVault(results['master-password']);
+    await credsService.displayAll();
+    final int id;
+    id = int.tryParse(results['id']) ?? askForId();
+    final creds = await credsService.searchById(id);
+    if (creds != null) {
+      await credsService.deleteCred(id: id);
+      await credsService.displayAll();
+      return;
+    } else {
+      print("Credential doesn't exist.");
+      return;
+    }
+  }
+
+  int askForId() {
+    String? input;
+    do {
+      print("Please choose an ID");
+      input = stdin.readLineSync();
+    } while (input == '' || input == null || int.tryParse(input) == null);
+    return int.parse(input);
+  }
 }

@@ -12,7 +12,6 @@ class DatabaseConnection {
       print("Database is already connected.");
       return;
     }
-    print("Connecting to the database...");
     if (hasEnv) {
       _connection = await Connection.open(
         Endpoint(

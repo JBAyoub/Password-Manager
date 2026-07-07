@@ -8,7 +8,7 @@ class LocalFileCredsImp implements CredRepo {
   }
 
   @override
-  Future<void> delete(Creds c) {
+  Future<void> delete({required int id}) {
     throw UnimplementedError();
   }
 
@@ -24,6 +24,11 @@ class LocalFileCredsImp implements CredRepo {
 
   @override
   Future<List<Creds>?> searchByWebsite({required String website}) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Creds?> searchById({required int id}) {
     throw UnimplementedError();
   }
 }

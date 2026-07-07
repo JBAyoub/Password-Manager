@@ -11,13 +11,16 @@ import 'package:password/commands/vault_commands.dart';
 
 void main(List<String>? arguments) async {
   final DatabaseConnection dbc = DatabaseConnection();
-
   final db = DatabaseService(connection: dbc);
   final vaultRepo = VaultImpl(db);
   final credentialRepo = PostgresCredsImp(db);
   final vaultService = VaultService(vaultRepo);
-  final credentialService = CredsService(vaultService, credentialRepo);
   final EncryptionService encryptionService = EncryptionService();
+  final credentialService = CredsService(
+    vaultService,
+    credentialRepo,
+    encryptionService,
+  );
   final vaultCommands = VaultCommands(vaultService);
   final credentialCommands = CredentialCommands(
     vaultService,

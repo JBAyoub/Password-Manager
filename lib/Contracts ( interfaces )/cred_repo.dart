@@ -5,5 +5,6 @@ abstract interface class CredRepo {
   Future<List<Creds>?> searchByWebsite({required String website});
   Future<List<Creds>?> searchByUsername({required String username});
   Future<void> addCred(Creds c);
-  Future<void> delete(Creds c);
+  Future<void> delete({required int id});
+  Future<Creds?> searchById({required int id});
 }

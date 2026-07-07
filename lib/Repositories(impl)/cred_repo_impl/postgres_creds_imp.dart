@@ -36,8 +36,11 @@ class PostgresCredsImp implements CredRepo {
   }
 
   @override
-  Future<void> delete(Creds c) async {
-    throw UnimplementedError();
+  Future<void> delete({required int id}) async {
+    await dbService.execute(
+      '''delete FROM credentials WHERE id = @id''',
+      parameters: {'id': id},
+    );
   }
 
   @override
@@ -104,5 +107,27 @@ class PostgresCredsImp implements CredRepo {
         website: values[1].toString(),
       );
     }).toList();
+  }
+
+  @override
+  Future<Creds?> searchById({required int id}) async {
+    final result = await dbService.query(
+      '''SELECT * FROM credentials WHERE id=@id''',
+      parameters: {'id': id},
+    );
+    if (result.isEmpty) {
+      return null;
+    }
+    final row = result.first;
+    return Creds(
+      id: row[0] as int,
+      website: row[1] as String,
+      username: row[2] as String,
+      p: EncryptedPassword(
+        cipherText: row[3] as List<int>,
+        nonce: row[4] as List<int>,
+        mac: row[5] as List<int>,
+      ),
+    );
   }
 }
