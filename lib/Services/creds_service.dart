@@ -37,7 +37,7 @@ class CredsService {
       for (var cred in listOfCreds) {
         print("---------------------------------");
         print(
-          'Website: ${cred.website} | Username: ${cred.username}'
+          'ID:${cred.id} | Website: ${cred.website} | Username: ${cred.username}'
           ' | Password: ${await encryptionService.decrypt(password: cred.p, key: vaultService.currentKey!)}',
         );
         print("---------------------------------");

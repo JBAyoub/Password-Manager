@@ -1,11 +1,9 @@
 class EncryptedPassword {
-  final int id;
   final List<int> cipherText;
   final List<int> nonce;
   final List<int> mac;
 
   EncryptedPassword({
-    required this.id,
     required this.cipherText,
     required this.nonce,
     required this.mac,
@@ -13,7 +11,6 @@ class EncryptedPassword {
 
   factory EncryptedPassword.fromJson(Map<String, dynamic> json) {
     return EncryptedPassword(
-      id: json['id'] as int,
       cipherText: json['cipherText'] as List<int>,
       nonce: json['nonce'] as List<int>,
       mac: json['mac'] as List<int>,

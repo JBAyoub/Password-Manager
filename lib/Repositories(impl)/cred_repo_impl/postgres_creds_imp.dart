@@ -46,8 +46,8 @@ class PostgresCredsImp implements CredRepo {
     return result.map((row) {
       final values = row as List<dynamic>;
       return Creds(
+        id: values[0] as int,
         p: EncryptedPassword(
-          id: values[0] as int,
           cipherText: (values[3] as List<dynamic>)
               .map((e) => e as int)
               .toList(),
@@ -69,8 +69,8 @@ class PostgresCredsImp implements CredRepo {
     return result.map((row) {
       final values = row as List<dynamic>;
       return Creds(
+        id: values[0] as int,
         p: EncryptedPassword(
-          id: values[0] as int,
           cipherText: (values[3] as List<dynamic>)
               .map((e) => e as int)
               .toList(),
@@ -92,8 +92,8 @@ class PostgresCredsImp implements CredRepo {
     return result.map((row) {
       final values = row as List<dynamic>;
       return Creds(
+        id: values[0] as int,
         p: EncryptedPassword(
-          id: values[0] as int,
           cipherText: (values[3] as List<dynamic>)
               .map((e) => e as int)
               .toList(),

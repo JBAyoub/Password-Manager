@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
-
 import 'package:cryptography/cryptography.dart';
 import 'package:password/Models/encrypted_password.dart';
 import 'package:uuid/uuid.dart';
@@ -17,9 +15,7 @@ class EncryptionService {
       secretKey: key,
     );
     return EncryptedPassword(
-      id: Random().nextInt(
-        1000000,
-      ), // Generate a unique ID for the encrypted password,
+      // Generate a unique ID for the encrypted password,
       cipherText: secretBox.cipherText,
       nonce: secretBox.nonce,
       mac: secretBox.mac.bytes,

@@ -1,11 +1,18 @@
 import 'package:password/Models/encrypted_password.dart';
 
 class Creds {
+  int? id;
+
   final EncryptedPassword _p;
   String username;
   String website;
 
-  Creds({required this._p, required this.username, required this.website});
+  Creds({
+    this.id,
+    required this._p,
+    required this.username,
+    required this.website,
+  });
 
   EncryptedPassword get p => _p;
 
