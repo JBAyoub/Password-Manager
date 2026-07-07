@@ -1,5 +1,4 @@
 import 'package:password/Contracts%20(%20interfaces%20)/cred_repo.dart';
-import 'package:password/Contracts%20(%20interfaces%20)/vault_repo.dart';
 import 'package:password/Models/Creds.dart';
 import 'package:password/Services/EncryptionService.dart';
 import 'package:password/Services/vault_service.dart';
@@ -18,10 +17,12 @@ class CredsService {
     final listOfCreds = await _credRepo.displayAll();
     if (listOfCreds != null && listOfCreds.isNotEmpty) {
       for (var cred in listOfCreds) {
+        print("---------------------------------");
         print(
-          'Website: ${cred.website}, Username: ${cred.username}'
-          ',Password: ${await encryptionService.decrypt(password: cred.p, key: vaultService.currentKey!)}',
+          'Website: ${cred.website} | Username: ${cred.username}'
+          ' | Password: ${await encryptionService.decrypt(password: cred.p, key: vaultService.currentKey!)}',
         );
+        print("---------------------------------");
       }
     } else {
       print('No credentials found.');
