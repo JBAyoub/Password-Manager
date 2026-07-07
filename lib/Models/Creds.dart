@@ -1,4 +1,5 @@
 import 'package:password/Models/encrypted_password.dart';
+import 'package:postgres/postgres.dart';
 
 class Creds {
   int? id;
@@ -23,6 +24,19 @@ class Creds {
       ),
       username: json['username'].toString(),
       website: json['website'].toString(),
+    );
+  }
+  factory Creds.fromRow(ResultRow row) {
+    final values = row as List<dynamic>;
+    return Creds(
+      id: values[0] as int,
+      p: EncryptedPassword(
+        cipherText: (values[3] as List<dynamic>).map((e) => e as int).toList(),
+        nonce: (values[4] as List<dynamic>).map((e) => e as int).toList(),
+        mac: (values[5] as List<dynamic>).map((e) => e as int).toList(),
+      ),
+      username: values[2].toString(),
+      website: values[1].toString(),
     );
   }
 

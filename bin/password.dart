@@ -14,8 +14,8 @@ void main(List<String>? arguments) async {
   final db = DatabaseService(connection: dbc);
   final vaultRepo = VaultImpl(db);
   final credentialRepo = PostgresCredsImp(db);
-  final vaultService = VaultService(vaultRepo);
-  final EncryptionService encryptionService = EncryptionService();
+  final encryptionService = EncryptionService();
+  final vaultService = VaultService(vaultRepo, encryptionService);
   final credentialService = CredsService(
     vaultService,
     credentialRepo,

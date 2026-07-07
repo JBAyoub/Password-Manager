@@ -10,8 +10,8 @@ class VaultService {
   Vault? _vault;
   Vault? get vault => _vault;
   final VaultRepo vaultRepo;
-  final EncryptionService encryptionService = EncryptionService();
-  VaultService(this.vaultRepo);
+  final EncryptionService encryptionService;
+  VaultService(this.vaultRepo, this.encryptionService);
   SecretKey? _currentKey;
   SecretKey? get currentKey => _currentKey;
   var env = DotEnv(includePlatformEnvironment: true)..load();
