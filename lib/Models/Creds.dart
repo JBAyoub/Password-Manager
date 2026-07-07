@@ -26,4 +26,9 @@ class Creds {
       'website': website,
     };
   }
+
+  @override
+  String toString() {
+    return '''---------------------------------\nWebsite: $website | Username: $username\n---------------------------------''';
+  }
 }

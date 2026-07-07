@@ -23,6 +23,15 @@ class CredentialCommands {
   final displayParser = ArgParser()
     ..addOption('master-password', abbr: 'm', mandatory: true);
 
+  final searchParser = ArgParser()
+    ..addOption('master-password', abbr: 'm', mandatory: true)
+    ..addOption("website", abbr: "w")
+    ..addOption("username", abbr: "u");
+
+  final deleteParser = ArgParser()
+    ..addOption("master-password", abbr: "m", mandatory: true)
+    ..addOption("username", abbr: "u", mandatory: true);
+
   Future<void> run(List<String>? args) async {
     print(displayParser.usage);
     print(createParser.usage);
@@ -37,6 +46,13 @@ class CredentialCommands {
         break;
       case 'display':
         await displayCredentials(args.sublist(1));
+        break;
+      case 'search':
+        await searchCredentials(args.sublist(1));
+        break;
+      case 'delete':
+        await deleteCredentials(args.sublist(1));
+        break;
     }
   }
 
@@ -74,4 +90,27 @@ class CredentialCommands {
       print(displayParser.usage);
     }
   }
+
+  Future<void> searchCredentials(List<String>? args) async {
+    if (args == null || args.isEmpty) {
+      print("No arguments were provided for the search.");
+      print(searchParser.usage);
+      return;
+    }
+    final ArgResults results = searchParser.parse(args);
+    await vaultService.unlockVault(results['master-password']);
+    if (results['username'] == null && results['website'] == null ||
+        (results['username'] != null && results['website'] != null)) {
+      print("Please search by either 'Website' or 'Username'");
+      return;
+    }
+    if (results['username'] != null) {
+      await credsService.searchByUsername(username: results['username']);
+      return;
+    } else {
+      await credsService.searchByWebsite(website: results['website']);
+    }
+  }
+
+  Future<void> deleteCredentials(List<String>? args) async {}
 }

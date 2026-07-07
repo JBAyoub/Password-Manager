@@ -93,7 +93,8 @@ class VaultService {
       }
       _currentKey = key;
     } on SecretBoxAuthenticationError catch (e) {
-      throw Exception("Incorrect master password. ${e.message}");
+      print("Incorrect master password. ${e.message}");
+      return;
     }
   }
 

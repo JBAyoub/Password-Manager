@@ -18,32 +18,12 @@ class LocalFileCredsImp implements CredRepo {
   }
 
   @override
-  Future<List<Creds>> importCreds() {
+  Future<List<Creds>?> searchByUsername({required String username}) {
     throw UnimplementedError();
   }
 
   @override
-  Future<void> saveCreds(List<Creds> listOfCredentials) {
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Creds?> searchByUsername(String username) {
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Creds?> searchByWebsite(String website) {
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Creds?> searchCred(int id) {
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> update(int id) {
+  Future<List<Creds>?> searchByWebsite({required String website}) {
     throw UnimplementedError();
   }
 }
