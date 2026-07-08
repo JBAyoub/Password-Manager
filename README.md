@@ -2,7 +2,7 @@
 
 A secure command-line password manager written in Dart.
 
-Passwords are encrypted using a master password before being stored in a PostgreSQL database. The application never stores the master password itself—only encrypted credentials.
+Passwords are encrypted using a master password before being stored in a PostgreSQL database. The application never stores the master password itself. Only encrypted credentials.
 
 ## Features
 
