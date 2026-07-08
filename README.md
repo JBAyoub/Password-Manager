@@ -103,7 +103,7 @@ This creates your encrypted vault.
 ### Add a credential
 
 ```bash
-password-manager.exe credentials add -m "YourStrongMasterPassword"
+password-manager.exe credentials add -m "YourStrongMasterPassword" -u "<USERNAME>" -p "<PASSWORD>" -w "<GITHUB.COM>"
 ```
 
 ### List stored credentials
