@@ -44,9 +44,11 @@ Create a `.env` file in the same directory as `docker-compose.yml`.
 Example:
 
 ```env
+DB_HOST=localhost
+DB_PORT=5433
 DB_NAME=password_manager
 DB_USER=postgres
-DB_PASSWORD=myStrongPassword
+DB_PASSWORD=change-me
 ```
 
 ---
