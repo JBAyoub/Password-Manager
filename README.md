@@ -111,6 +111,13 @@ password-manager.exe credentials create -m "YourStrongMasterPassword" -u "<USERN
 ```bash
 password-manager.exe credentials display -m "YourStrongMasterPassword"
 ```
+###EXAMPLE DISPLAY: 
+password-manager.exe credentials display -m "YourStrongMasterPassword"
+---------------------------------
+ID:1 | Website: <GITHUB.COM> | Username: <USERNAME1> | Password: <PASSWORD1>
+---------------------------------
+---------------------------------
+ID:2 | Website: <GUTHIB.COM> | Username: <USERNAME2> | Password: <PASSWORD2>
 
 ### Delete a credential
 
