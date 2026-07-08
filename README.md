@@ -98,50 +98,24 @@ This creates your encrypted vault.
 
 ---
 
-## 4. Unlock the Vault
-
-```bash
-password-manager.exe vault unlock -m "YourStrongMasterPassword"
-```
-
-The vault must be unlocked before you can access encrypted credentials.
-
----
-
-## 5. Lock the Vault
-
-```bash
-password-manager.exe vault lock
-```
-
-This removes the encryption key from memory.
-
----
-
 ## Managing Credentials
 
 ### Add a credential
 
 ```bash
-password-manager.exe credentials add
+password-manager.exe credentials add -m "YourStrongMasterPassword"
 ```
 
 ### List stored credentials
 
 ```bash
-password-manager.exe credentials list
-```
-
-### View a password
-
-```bash
-password-manager.exe credentials get
+password-manager.exe credentials display -m "YourStrongMasterPassword"
 ```
 
 ### Delete a credential
 
 ```bash
-password-manager.exe credentials delete
+password-manager.exe credentials delete -id 5 -m "YourStrongMasterPassword"
 ```
 
 > Run `--help` after any command to see its available options.
