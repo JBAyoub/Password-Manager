@@ -1,2 +1,19 @@
-A sample command-line application with an entrypoint in `bin/`, library code
-in `lib/`, and example unit test in `test/`.
+# Password Manager
+
+AES-GCM encrypted password manager written in Dart.
+
+## Run
+
+docker compose up
+
+## Compile
+
+dart compile exe bin/password.dart
+
+## Tests
+
+dart test
+
+## Analyze
+
+dart analyze

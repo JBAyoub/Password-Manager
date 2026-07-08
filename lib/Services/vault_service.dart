@@ -1,10 +1,10 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 import 'package:cryptography/cryptography.dart';
 import 'package:password/Contracts%20(%20interfaces%20)/vault_repo.dart';
 import 'package:password/Models/vault.dart';
 import 'package:password/Services/EncryptionService.dart';
-import 'package:dotenv/dotenv.dart';
 
 class VaultService {
   Vault? _vault;
@@ -14,7 +14,6 @@ class VaultService {
   VaultService(this.vaultRepo, this.encryptionService);
   SecretKey? _currentKey;
   SecretKey? get currentKey => _currentKey;
-  var env = DotEnv(includePlatformEnvironment: true)..load();
 
   List<int> generateSalt() {
     final random = Random.secure();
@@ -42,7 +41,7 @@ class VaultService {
     final key = await _deriveKey(masterPassword: masterPassword, salt: salt);
     final verification = await encryptionService.encrypt(
       password:
-          env['VERIFICATION_TEXT'] ??
+          Platform.environment['VERIFICATION_TEXT'] ??
           'YOU_REALLY_SHOULD_CHOOSE_A_STRONGER_VERIFICATION_TEXT',
       key: key,
     );
@@ -91,7 +90,7 @@ class VaultService {
     try {
       final bytes = await algorithm.decrypt(verificationBox, secretKey: key);
       final text = utf8.decode(bytes);
-      if (text != env['VERIFICATION_TEXT']) {
+      if (text != Platform.environment['VERIFICATION_TEXT']) {
         throw Exception("Incorrect master password.");
       }
       _currentKey = key;
