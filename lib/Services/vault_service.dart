@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 import 'package:cryptography/cryptography.dart';
+import 'package:dotenv/dotenv.dart';
 import 'package:password/Contracts%20(%20interfaces%20)/vault_repo.dart';
 import 'package:password/Models/vault.dart';
 import 'package:password/Services/EncryptionService.dart';
@@ -88,15 +89,15 @@ class VaultService {
     );
 
     try {
+      final env = DotEnv(includePlatformEnvironment: true)..load();
       final bytes = await algorithm.decrypt(verificationBox, secretKey: key);
       final text = utf8.decode(bytes);
-      if (text != Platform.environment['VERIFICATION_TEXT']) {
+      if (text != env['VERIFICATION_TEXT']) {
         throw Exception("Incorrect master password.");
       }
       _currentKey = key;
     } on SecretBoxAuthenticationError catch (e) {
-      print("Incorrect master password. ${e.message}");
-      return;
+      throw ("Incorrect master password. ${e.message}");
     }
   }
 }

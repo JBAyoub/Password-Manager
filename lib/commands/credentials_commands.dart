@@ -121,8 +121,12 @@ class CredentialCommands {
     final ArgResults results = deleteParser.parse(args);
     await vaultService.unlockVault(results['master-password']);
     await credsService.displayAll();
-    final int id;
-    id = int.tryParse(results['id']) ?? askForId();
+    late final int id;
+    if (results['id'] == null) {
+      id = askForId();
+    } else {
+      id = int.parse(results['id']);
+    }
     final creds = await credsService.searchById(id);
     if (creds != null) {
       await credsService.deleteCred(id: id);
