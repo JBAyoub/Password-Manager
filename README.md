@@ -111,8 +111,7 @@ password-manager.exe credentials create -m "YourStrongMasterPassword" -u "<USERN
 ```bash
 password-manager.exe credentials display -m "YourStrongMasterPassword"
 ```
-###EXAMPLE DISPLAY: 
-password-manager.exe credentials display -m "YourStrongMasterPassword"
+EXAMPLE DISPLAY: 
 ---------------------------------
 ID:1 | Website: <GITHUB.COM> | Username: <USERNAME1> | Password: <PASSWORD1>
 ---------------------------------
